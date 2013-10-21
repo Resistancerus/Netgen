@@ -21,7 +21,7 @@ class NgMutex { };
 class NgLock
 {
 public:
-  NgLock (NgMutex & mut, bool lock = 0) { ; }
+  NgLock (NgMutex & /*mut*/, bool /*lock*/ = 0) { ; }
   void Lock () { ; }
   void UnLock () { ; }
 };
