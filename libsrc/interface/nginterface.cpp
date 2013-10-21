@@ -11,6 +11,7 @@
 #include "nginterface.h"
 #include "../visualization/soldata.hpp"
 
+#ifndef NO_PARALLEL_THREADS
 
 #ifdef _MSC_VER
 // Philippose - 30/01/2009
@@ -90,7 +91,7 @@ void RunParallel ( void * (*fun)(void *), void * in)
 
 #endif // #ifdef _MSC_VER
 
-
+#endif /* NO_PARALLEL_THREADS */
 
 
 
@@ -199,9 +200,11 @@ void Ng_LoadMesh (const char * filename)
       string fn(filename);
 
       istream * infile;
+#ifndef NO_ZLIB
       if (fn.substr (fn.length()-3, 3) == ".gz")
         infile = new igzstream (filename);
       else
+#endif
         infile = new ifstream (filename);
 
       Ng_LoadMeshFromStream(*infile);
@@ -1627,6 +1630,7 @@ int Ng_GetNVertexElements (int vnr)
         return cnt;
       }
     }
+  return 0; // to avoid compiler warning
 }
 
 void Ng_GetVertexElements (int vnr, int * els)

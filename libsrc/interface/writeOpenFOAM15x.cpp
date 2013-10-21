@@ -665,49 +665,31 @@ namespace netgen
 	  ostream *outfile_nei;
 	  ostream *outfile_bnd;
 
+#ifndef NO_ZLIB
 	  if(compressed)
 	  {
 		  sprintf(casefiles, "%s/constant/polyMesh/points.gz", casename.c_str());
 		  outfile_pnts = new ogzstream(casefiles);
-	  }
-	  else
-	  {
-		  sprintf(casefiles, "%s/constant/polyMesh/points", casename.c_str());
-		  outfile_pnts = new ofstream(casefiles);
-	  }
-
-	  if(compressed)
-	  {
 		  sprintf(casefiles, "%s/constant/polyMesh/faces.gz", casename.c_str());
 		  outfile_faces = new ogzstream(casefiles);
-	  }
-	  else
-	  {
-		  sprintf(casefiles, "%s/constant/polyMesh/faces", casename.c_str());
-		  outfile_faces = new ofstream(casefiles);
-	  }
-
-	  if(compressed)
-	  {
 		  sprintf(casefiles, "%s/constant/polyMesh/owner.gz", casename.c_str()); 
 		  outfile_own = new ogzstream(casefiles);
-	  }
-	  else
-	  {
-		  sprintf(casefiles, "%s/constant/polyMesh/owner", casename.c_str()); 
-		  outfile_own = new ofstream(casefiles);
-	  }
-
-	  if(compressed)
-	  {
 		  sprintf(casefiles, "%s/constant/polyMesh/neighbour.gz", casename.c_str());
 		  outfile_nei = new ogzstream(casefiles);
 	  }
 	  else
+#else /* NO_ZLIB */
 	  {
+		  sprintf(casefiles, "%s/constant/polyMesh/points", casename.c_str());
+		  outfile_pnts = new ofstream(casefiles);
+		  sprintf(casefiles, "%s/constant/polyMesh/faces", casename.c_str());
+		  outfile_faces = new ofstream(casefiles);
+		  sprintf(casefiles, "%s/constant/polyMesh/owner", casename.c_str()); 
+		  outfile_own = new ofstream(casefiles);
 		  sprintf(casefiles, "%s/constant/polyMesh/neighbour", casename.c_str());
 		  outfile_nei = new ofstream(casefiles);
 	  }
+#endif /* NO_ZLIB */
 
 	  // Note... the boundary file is not compressed
       sprintf(casefiles, "%s/constant/polyMesh/boundary", casename.c_str()); 

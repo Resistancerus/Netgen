@@ -43,6 +43,9 @@
 
 #include "mpi_interface.hpp"
 #include "netgenout.hpp"
+
+#ifndef NO_ZLIB
 #include "gzstream.h"
+#endif
 
 #endif

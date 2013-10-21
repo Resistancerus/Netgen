@@ -26,9 +26,12 @@
 // Standard C++ Library".
 // ============================================================================
 
-#include "gzstream.h"
 #include <iostream>
 #include <string.h>  // for memcpy
+
+#ifndef NO_ZLIB /* deactivate this code if ZLib is not available */
+
+#include "gzstream.h"
 
 #ifdef GZSTREAM_NAMESPACE
 namespace GZSTREAM_NAMESPACE {
@@ -160,6 +163,8 @@ void gzstreambase::close() {
 #ifdef GZSTREAM_NAMESPACE
 } // namespace GZSTREAM_NAMESPACE
 #endif
+
+#endif /* NO_ZLIB */
 
 // ============================================================================
 // EOF //

@@ -310,9 +310,11 @@ void WriteSTLFormat (const Mesh & mesh,
 
   ostream *outfile;
 
+#ifndef NO_ZLIB
   if(filename.substr(filename.length()-3,3) == ".gz")
 	  outfile = new ogzstream(filename.c_str());
   else
+#endif
 	  outfile = new ofstream(filename.c_str());
 
   int i;
@@ -367,9 +369,11 @@ void WriteSTLExtFormat (const Mesh & mesh,
 
   ostream *outfile;
 
+#ifndef NO_ZLIB
   if(filename.substr(filename.length()-3,3) == ".gz")
 	  outfile = new ogzstream(filename.c_str());
   else
+#endif
 	  outfile = new ofstream(filename.c_str());
 
   outfile->precision(10);
