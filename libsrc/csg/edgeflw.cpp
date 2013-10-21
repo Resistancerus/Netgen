@@ -1607,7 +1607,7 @@ namespace netgen
 	else
 	  {
 	    cerr << "edgeflw.cpp: should identify, but cannot";
-	    exit(1);
+            throw "NetGen error: failure of edgeflw.cpp";
 	  }
 #ifdef DEVELOP
 	(*testout) << "adding identification " << mesh[frompi] << "; " << mesh[topi]

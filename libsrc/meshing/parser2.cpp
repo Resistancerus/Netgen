@@ -505,7 +505,7 @@ void Meshing2 :: LoadRules (const char * filename, bool quad)
   if (!ist.good())
     {
       cerr << "Rule description file " << filename << " not found" << endl;
-      exit (1);
+      throw "NetGen error: rule description file not found";
     }
   */
 
@@ -576,7 +576,7 @@ void Meshing2 :: LoadRules (const char * filename, bool quad)
     {
       cerr << "Rule description file " << filename << " not found" << endl;
       delete ist;
-      exit (1);
+      throw "NetGen error: rule description file not found";
     }
     
   while (!ist->eof())

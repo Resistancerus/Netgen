@@ -225,12 +225,12 @@ namespace netgen
 	  {
 	    cerr << "link, error " << endl;
 	    cerr << "pi = " << pi << " linked.s = " << linked.Size() << endl;
-	    exit(1);
+            throw "NetGen error: link error";
 	  }
 	if (linked.Size() > links.Size())
 	  {
 	    cerr << "links have loop" << endl;
-	    exit(1);
+            throw "NetGen error: links have loops";
 	  }
 
 	linked.Append (pi);
@@ -1413,7 +1413,7 @@ namespace netgen
       }
     */
 
-    while (1)
+    for (;;)
       {
 	int inside;
 	bool done = 1;

@@ -709,7 +709,7 @@ int vnetrule :: IsTriangleInFreeSet (const Point3d & p1, const Point3d & p2,
 
   
 
-  while (1)
+  for (;;)
     {
       it++;
 

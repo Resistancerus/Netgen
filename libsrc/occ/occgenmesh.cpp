@@ -593,7 +593,8 @@ namespace netgen
       //	for(i=1; i<=mesh.GetNSeg(); i++)
       //		(*testout) << "edge " << mesh.LineSegment(i).edgenr << " face " << mesh.LineSegment(i).si
       //				<< " p1 " << mesh.LineSegment(i)[0] << " p2 " << mesh.LineSegment(i)[1] << endl;
-      //	exit(10);
+      //	throw "NetGen error: x34o";
+
 
       mesh.CalcSurfacesOfNode();
       multithread.task = savetask;

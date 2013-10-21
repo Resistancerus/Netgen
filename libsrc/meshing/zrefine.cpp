@@ -303,7 +303,7 @@ namespace netgen
   
     Array<EdgePointGeomInfo> epgi;
 
-    while (1)
+    for (;;)
       {
 	cnt++;
 	PrintMessage (3, "Z-Refinement, level = ", cnt);

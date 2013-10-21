@@ -480,7 +480,7 @@ namespace netgen
     mesh3d.GetBox (pmin, pmax);
     PrintMessage (1, "Mesh pyramids, res = ", res);
     if (res)
-      exit (1);
+      throw "NetGen error: mesh pyramids";
 
 
     for (i = 1; i <= mesh3d.GetNE(); i++)
@@ -570,7 +570,7 @@ namespace netgen
       {
 	mesh3d.FindOpenElements();
 	PrintSysError (1, "Open elemetns: ", mesh3d.GetNOpenElements());
-	exit (1);
+        throw "NetGen error: open elements";
       }
 
 

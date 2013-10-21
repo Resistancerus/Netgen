@@ -272,7 +272,7 @@ GetIdentifiedPoint (class Mesh & mesh,  int pi)
       else
 	{
 	  cerr << "GetIdenfifiedPoint: Not possible" << endl;
-	  exit (1);
+          throw "NetGen error: failure of GetIdentifiedPoint";
 	}    
     }
   
@@ -739,7 +739,7 @@ Identifyable (const SpecialPoint & sp1, const SpecialPoint & sp2,
   bool joint = 0;
 
   int j = 0, k = 0;
-  while (1)
+  for (;;)
     {
       int snr1 = specpoint2surface[sp1.nr][j];
       int snr2 = specpoint2surface[sp2.nr][k];

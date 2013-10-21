@@ -490,7 +490,7 @@ public:
   int Position (const INDEX & ind) const
   {
     int i = HashValue(ind);
-    while (1)
+    for (;;)
       {
 	if (hash.Get(i) == ind) return i;
 	if (hash.Get(i) == invalid) return 0;
@@ -503,7 +503,7 @@ public:
   {
     int i = HashValue(ind);
     int costs = 1;
-    while (1)
+    for (;;)
       {
 	if (hash.Get(i) == ind) return costs;
 	if (hash.Get(i) == invalid) return costs;
@@ -658,7 +658,7 @@ public:
   int Position (const INDEX_2 & ind) const
   {
     int i = HashValue(ind);
-    while (1)
+    for (;;)
       {
 	if (hash.Get(i) == ind) return i;
 	if (hash.Get(i).I1() == invalid) return 0;
@@ -803,7 +803,7 @@ public:
   int Position (const INDEX_3 & ind) const
   {
     int i = HashValue(ind);
-    while (1)
+    for (;;)
       {
 	if (hash[i] == ind) return i;
 	if (hash[i].I1() == invalid) return -1;
@@ -815,7 +815,7 @@ public:
   {
     int i = HashValue(ind);
     int c = 1;
-    while (1)
+    for (;;)
       {
 	if (hash[i] == ind) return c;
 	if (hash[i].I1() == invalid) return c;

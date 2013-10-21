@@ -81,7 +81,7 @@ namespace netgen
             
             if (token == "HEADER")
               {
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -114,7 +114,7 @@ namespace netgen
 
             else if (token == "ELEM_TYPES")
               {
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -150,7 +150,7 @@ namespace netgen
 
             else if (token == "COORD_SYSTEMS")
               {
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -176,7 +176,7 @@ namespace netgen
 		*testout << "parse materials" << endl;
                 Array<double> young_modulus, poisson_ratio, mass_density;
 
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -227,7 +227,7 @@ namespace netgen
             
             else if (token == "MESH")
               {
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -251,7 +251,7 @@ namespace netgen
                         sbuf >> elnr >> def >> ch;
                         sbuf >> typid >> matid >> propid;
                         Array<int> pnums;
-                        while (1)
+                        for (;;)
                           {
                             int pn;
                             sbuf >> pn;
@@ -277,7 +277,7 @@ namespace netgen
               }
             else if (token == "MESH_TOPOLOGY")
               {
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);
@@ -292,7 +292,7 @@ namespace netgen
                         if (kw == "NODES")
                           {
                             Array<int> enums;
-                            while (1)
+                            for (;;)
                               {
                                 int en;
                                 sbuf >> en;
@@ -316,7 +316,7 @@ namespace netgen
                         if (kw == "FACES")
                           {
                             Array<int> fnums;
-                            while (1)
+                            for (;;)
                               {
                                 int fn;
                                 sbuf >> fn;
@@ -361,7 +361,7 @@ namespace netgen
               {
                 Array<LoadType*> loadtypes;
 
-                while (1)
+                for (;;)
                   {
                     ReadLine (fin, buf);
                     stringstream sbuf(buf);

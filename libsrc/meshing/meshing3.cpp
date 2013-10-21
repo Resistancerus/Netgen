@@ -234,7 +234,7 @@ GenerateMesh (Mesh & mesh, const MeshingParameters & mp)
 
   stat.qualclass = 1;
 
-  while (1)
+  for (;;)
     {
       if (multithread.terminate)
 	throw NgException ("Meshing stopped");
@@ -833,7 +833,7 @@ void Meshing3 :: BlockFill (Mesh & mesh, double gh)
   
 
 
-  while (1)
+  for (;;)
     {
       int undefi = 0;
       Point3d undefp;

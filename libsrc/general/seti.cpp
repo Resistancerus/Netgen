@@ -39,7 +39,7 @@ namespace netgen
     if (ind > flags.Size())
     {
     cerr << "out of range" << endl;
-    exit (1);
+    throw "NetGen error: out of range";
     }
 
     if (!flags.Test(ind))

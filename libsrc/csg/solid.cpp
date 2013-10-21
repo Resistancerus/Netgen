@@ -424,7 +424,7 @@ namespace netgen
     //char * hstr = str;
     char ch;
 
-    while (1)
+    for (;;)
       {
 	ist.get(ch);
 	if (!ist.good()) break;
@@ -436,7 +436,7 @@ namespace netgen
 	  }
       }
 
-    while (1)
+    for (;;)
       {
 	ist.get(ch);
 	if (!ist.good()) break;

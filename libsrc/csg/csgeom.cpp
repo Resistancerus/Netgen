@@ -912,7 +912,7 @@ namespace netgen
 		(isidenticto[locsurf[i]] == isidenticto[locsurf[j]]))
 	      {
 		cerr << "different result" << endl;
-		exit(1);
+                throw "NetGen error: different result";
 	      }
 
 	    if (isidenticto[locsurf[i]] == isidenticto[locsurf[j]])
@@ -1089,7 +1089,7 @@ namespace netgen
 	     << "****   before loading the geometry                       ****" << endl
 	     << "****   meshing will still work !                         ****" << endl
 	     << "*************************************************************" << endl;
-	exit(1);
+	throw "NetGen error: out of memory";
       }
     Change();
   }

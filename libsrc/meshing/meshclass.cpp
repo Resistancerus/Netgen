@@ -2149,7 +2149,7 @@ namespace netgen
 		bout << "key = " << i2 << ", data = " << data << endl;
 	      }
 	  }
-	exit(1);
+        throw "NetGen error: buggy";
       }
     */
 
@@ -4711,7 +4711,7 @@ namespace netgen
 
     dom = 0;
 
-    while (1)
+    for (;;)
       {
         int cntd = 1;
 

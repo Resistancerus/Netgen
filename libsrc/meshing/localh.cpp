@@ -243,7 +243,7 @@ namespace netgen
   {
     const GradingBox * box = root;
 
-    while (1)
+    for (;;)
       {
 	int childnr = 0;
 	if (x.X() > box->xmid[0]) childnr += 1;

@@ -989,7 +989,7 @@ void Meshing3 :: LoadRules (const char * filename, const char ** prules)
     {
       cerr << "Rule description file " << filename << " not found" << endl;
       delete ist;
-      exit (1);
+      throw "NetGen error: rule description file not found";
     }
     
   while (!ist->eof())
@@ -1005,7 +1005,7 @@ void Meshing3 :: LoadRules (const char * filename, const char ** prules)
 	  if (!rule->TestOk())
 	    {
 	      PrintSysError ("Parser3d: Rule ", rules.Size(), " not ok");
-	      exit (1);
+              throw "NetGen error: Parser3d found bad rule";
 	    }
 	}
       else if (strcmp (buf, "tolfak") == 0)

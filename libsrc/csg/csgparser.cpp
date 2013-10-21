@@ -368,7 +368,7 @@ namespace netgen
 	      Polyhedra * polyhedron = new Polyhedra;
 
 	      // scanning the points
-	      while (1)
+	      for (;;)
 		{
 		  p = Point<3> (ParseVector (scan));
 		  ParseChar (scan, ';');
@@ -384,7 +384,7 @@ namespace netgen
 
 	      // scanning the faces
 	      int inputface = 0;
-	      while (1)
+	      for (;;)
 		{
 		  Array<int> pnums,cleaned_pnums;
 		  for(int i=0; i<3; i++)
@@ -836,7 +836,7 @@ namespace netgen
 
     try
       {
-	while (1)
+	for (;;)
 	  {
 	    if (scan.GetToken() == TOK_END) break;
 	    

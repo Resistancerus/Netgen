@@ -158,7 +158,7 @@ namespace netgen
   Position2 (const INDEX & ind) const
   {
     int i = HashValue(ind);
-    while (1)
+    for (;;)
       {
 	i++;
 	if (i > hash.Size()) i = 1;
@@ -172,7 +172,7 @@ namespace netgen
   {
     int i = HashValue(ind);
     int startpos = i;
-    while (1)
+    for (;;)
       {
 	i++;
 	if (i > hash.Size()) i = 1;
@@ -236,7 +236,7 @@ namespace netgen
   Position2 (const INDEX_2 & ind) const
   {
     int i = HashValue(ind);
-    while (1)
+    for (;;)
       {
 	i++;
 	if (i > hash.Size()) i = 1;
@@ -250,7 +250,7 @@ namespace netgen
   {
     int i = HashValue(ind);
     int startpos = i;
-    while (1)
+    for (;;)
       {
 	i++;
 	if (i > hash.Size()) i = 1;
@@ -300,7 +300,7 @@ namespace netgen
   {
     int i = HashValue(ind);
     int startpos = i;
-    while (1)
+    for (;;)
       {
         /*
 	i++;

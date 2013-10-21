@@ -106,7 +106,7 @@ namespace netgen
               {
                 cout << "nodes found" << endl;
 
-                while (1)
+                for (;;)
                   {
                     int pi, hi;
                     Point<3> p;
@@ -130,7 +130,7 @@ namespace netgen
               {
                 cout << "elements found" << endl;
 
-                while (1)
+                for (;;)
                   {
 		    int label, fe_id, phys_prop, mat_prop, color, nnodes;
 		    int nodes[100];
