@@ -38,6 +38,8 @@
 
 #include "utilities.h"
 
+#include <Standard_Version.hxx>
+
 #include <Precision.hxx>
 #include <TopAbs_Orientation.hxx>
 #include <TopExp.hxx>
@@ -1169,8 +1171,11 @@ static void findEqual (const TopTools_ListOfShape& EL1,
           for (; j<=nbj && ok; ++j) {
             if (Extrema.IsMin(j)) {
 	      hasMin = Standard_True;
-	      ok = Extrema.Value(j) <= tol;  // V6.3
-	      // ok = Extrema.SquareDistance(j) <= tol;  // V6.5
+#if OCC_VERSION_HEX < 0x060500
+	      ok = Extrema.Value(j) <= tol;  // OCCT 6.3
+#else
+	      ok = Extrema.SquareDistance(j) <= tol * tol;  // OCCT 6.5
+#endif
 	    }
           }
         }

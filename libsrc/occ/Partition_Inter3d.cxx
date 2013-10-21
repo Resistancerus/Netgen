@@ -35,6 +35,8 @@
 #include "Partition_Inter3d.ixx"
 #include "utilities.h"
 
+#include <Standard_Version.hxx>
+
 #include <BRepAlgo_AsDes.hxx>
 #include <BRepAlgo_Image.hxx>
 #include <BRepLib.hxx>
@@ -86,6 +88,7 @@
 #include <TopOpeBRepTool_OutCurveType.hxx>
 #include <TopOpeBRep_DSFiller.hxx>
 #include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+
 #include <stdio.h>
 
 //=======================================================================
@@ -243,9 +246,12 @@ static void PutInBounds (const TopoDS_Face&          F,
       Standard_Integer i, nbExt = anExtPS.NbExt();
       Extrema_POnSurf aPOnSurf;
       for (i = 1; i <= nbExt; ++i )
-	if (anExtPS.Value( i ) <= TolE)               // V6.3
-	  // if (anExtPS.SquareDistance( i ) <= TolE)   // V6.5
-	  {
+#if OCC_VERSION_HEX < 0x060500
+	if (anExtPS.Value( i ) <= TolE)            // OCCT 6.3
+#else
+	if (anExtPS.SquareDistance( i ) <= TolE*TolE)   // OCCT 6.5
+#endif
+	{
           aPOnSurf = anExtPS.Point( i );
           break;
         }
