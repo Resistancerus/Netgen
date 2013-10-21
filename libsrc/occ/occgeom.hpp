@@ -189,7 +189,7 @@ namespace netgen
 
 
 
-   class OCCGeometry : public NetgenGeometry
+   class DLL_HEADER OCCGeometry : public NetgenGeometry
    {
       Point<3> center;
 
