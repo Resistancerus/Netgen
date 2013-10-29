@@ -842,7 +842,7 @@ namespace netgen
       { return (i == 0) ? p1 : p2; }
     */
 
-    Segment& operator=(const Segment & other);
+    DLL_HEADER Segment& operator=(const Segment & other);
 
   
     int hp_elnr;

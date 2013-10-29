@@ -524,7 +524,7 @@ void Meshing2 :: LoadRules (const char * filename, bool quad)
       if (!quad)
 	{
 	  hcp = triarules;
-	  PrintMessage (3, "load internal triangle rules");
+	  //PrintMessage (3, "load internal triangle rules");
 	}
       else
 	{

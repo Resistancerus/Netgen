@@ -3,6 +3,8 @@
 
 #include <mystdlib.h>
 #include <occgeom.hpp>
+#include <BRepTopAdaptor_FClass2d.hxx> // -- to optimize Project() and FastProject()
+#include <TopAbs_State.hxx>
 #include "ShapeAnalysis_ShapeTolerance.hxx"
 #include "ShapeAnalysis_ShapeContents.hxx"
 #include "ShapeAnalysis_CheckSmallFace.hxx"
@@ -19,6 +21,14 @@
 
 namespace netgen
 {
+   // free data used to optimize Project() and FastProject()
+   OCCGeometry::~OCCGeometry()
+   {
+     NCollection_DataMap<int,BRepTopAdaptor_FClass2d*>::Iterator it(fclsmap);
+     for (; it.More(); it.Next())
+       delete it.Value();
+   }
+
    void OCCGeometry :: PrintNrShapes ()
    {
       TopExp_Explorer e;
@@ -33,7 +43,26 @@ namespace netgen
       cout << "Vertices  : " << vmap.Extent() << endl;
    }
 
-
+   // returns a projector and a classifier for the given surface
+   void OCCGeometry::GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj,
+                                  BRepTopAdaptor_FClass2d*& cls) const
+   {
+     //MSV: organize caching projector in the map
+     if (fprjmap.IsBound(surfi))
+     {
+       proj = fprjmap.Find(surfi);
+       cls = fclsmap.Find(surfi);
+     }
+     else
+     {
+       const TopoDS_Face& aFace = TopoDS::Face(fmap(surfi));
+       Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aFace);
+       proj = new ShapeAnalysis_Surface(aSurf);
+       fprjmap.Bind(surfi, proj);
+       cls = new BRepTopAdaptor_FClass2d(aFace,Precision::Confusion());
+       fclsmap.Bind(surfi, cls);
+     }
+   }
 
 
    void PrintContents (OCCGeometry * geom)
@@ -953,23 +982,36 @@ namespace netgen
 
 
 
-   void OCCGeometry :: Project (int surfi, Point<3> & p) const
+   //void OCCGeometry :: Project (int surfi, Point<3> & p) const
+   bool OCCGeometry :: Project (int surfi, Point<3> & p, double& u, double& v) const
    {
       static int cnt = 0;
       if (++cnt % 1000 == 0) cout << "Project cnt = " << cnt << endl;
 
       gp_Pnt pnt(p(0), p(1), p(2));
 
-      double u,v;
+      /*double u,v;
       Handle( Geom_Surface ) thesurf = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
       Handle( ShapeAnalysis_Surface ) su = new ShapeAnalysis_Surface( thesurf );
       gp_Pnt2d suval = su->ValueOfUV ( pnt, BRep_Tool::Tolerance( TopoDS::Face(fmap(surfi)) ) );
       suval.Coord( u, v);
       pnt = thesurf->Value( u, v );
+      */
+      Handle(ShapeAnalysis_Surface) proj;
+      BRepTopAdaptor_FClass2d *cls;
+      GetFaceTools(surfi, proj, cls);
+  
+      gp_Pnt2d p2d = proj->ValueOfUV(pnt, Precision::Confusion());
+      if (cls->Perform(p2d) == TopAbs_OUT)
+      {
+        return false;
+      }
+      pnt = proj->Value(p2d);
+      p2d.Coord(u, v);
 
 
       p = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
-
+      return true;
    }
 
 
@@ -978,7 +1020,7 @@ namespace netgen
    bool OCCGeometry :: FastProject (int surfi, Point<3> & ap, double& u, double& v) const
    {
       gp_Pnt p(ap(0), ap(1), ap(2));
-
+/*
       Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
 
       gp_Pnt x = surface->Value (u,v);
@@ -1027,6 +1069,21 @@ namespace netgen
       if (count == 50) return false;
 
       ap = Point<3> (x.X(), x.Y(), x.Z());
+*/
+      Handle(ShapeAnalysis_Surface) proj;
+      BRepTopAdaptor_FClass2d *cls;
+      GetFaceTools(surfi, proj, cls);
+    
+      gp_Pnt2d p2d = proj->NextValueOfUV(gp_Pnt2d(u,v), p, Precision::Confusion());
+      if (cls->Perform(p2d) == TopAbs_OUT)
+      {
+        //cout << "Projection fails" << endl;
+        return false;
+      }
+    
+      p = proj->Value(p2d);
+      p2d.Coord(u, v);
+      ap = Point<3> (p.X(), p.Y(), p.Z());
 
       return true;
    }

@@ -416,7 +416,6 @@ namespace netgen
    
     if (loclines.Size() == 1)
       {
-	cout << "loclines.Size = 1" << endl;
 	(*testout) << "loclines.size = 1" << endl
 		   << " h = " << xh << endl
 		   << " nearline.size = " << nearlines.Size() << endl

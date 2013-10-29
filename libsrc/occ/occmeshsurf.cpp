@@ -6,7 +6,7 @@
 #include <meshing.hpp>
 #include <GeomLProp_SLProps.hxx>
 #include <ShapeAnalysis_Surface.hxx>
-
+#include <GeomAPI_ProjectPointOnCurve.hxx> // -- moved here from occgeom.hpp
 
 namespace netgen
 {
@@ -434,7 +434,9 @@ namespace netgen
 
   void MeshOptimize2dOCCSurfaces :: ProjectPoint (INDEX surfind, Point<3> & p) const
   {
-    geometry.Project (surfind, p);
+    //geometry.Project (surfind, p); //-- signature of Project() changed for optimization
+    double u, v;
+    geometry.Project (surfind, p, u, v);
   }
 
 
@@ -444,13 +446,21 @@ namespace netgen
     double v = gi.v;
 
     Point<3> hp = p;
-    if (geometry.FastProject (surfind, hp, u, v))
-      {
-	p = hp;
-	return 1;
-      }
-    ProjectPoint (surfind, p); 
-    return CalcPointGeomInfo (surfind, gi, p); 
+    // -- u and v are computed by FastProject() and Project(), no need to call CalcPointGeomInfo()
+     /*if (geometry.FastProject (surfind, hp, u, v))
+       {
+        p = hp;
+        return 1;
+       }
+     ProjectPoint (surfind, p); 
+     return CalcPointGeomInfo (surfind, gi, p); */
+    bool ok;
+    if (gi.trignum > 0)
+      ok = geometry.FastProject (surfind, hp, gi.u, gi.v);
+    else
+      ok = geometry.Project (surfind, hp, gi.u, gi.v);
+    p = hp;
+    return ok;
   }
 
 
@@ -672,24 +682,22 @@ namespace netgen
     hnewp = p1+secpoint*(p2-p1);
 
     if (surfi > 0)
+    {
+      double u = gi1.u+secpoint*(gi2.u-gi1.u);
+      double v = gi1.v+secpoint*(gi2.v-gi1.v);
+      if (!geometry.FastProject (surfi, hnewp, u, v))
       {
-      
-	double u = gi1.u+secpoint*(gi2.u-gi1.u);
-	double v = gi1.v+secpoint*(gi2.v-gi1.v);
- 
-	if (!geometry.FastProject (surfi, hnewp, u, v))
-	  {
-	  //  cout << "Fast projection to surface fails! Using OCC projection" << endl;
-	    geometry.Project (surfi, hnewp);
-	  }
-
-	newgi.trignum = 1;
-        newgi.u = u;
-        newgi.v = v;
+          //  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+        //geometry.Project (surfi, hnewp); // Project() changed for optimization
+          geometry.Project (surfi, hnewp, u, v);
       }
+      newgi.trignum = 1;
+      newgi.u = u;
+      newgi.v = v;
+    }
   
     newp = hnewp;
-  }
+  }//; -- to compile with -Wall -pedantic
 
 
   void OCCRefinementSurfaces :: 
@@ -708,28 +716,30 @@ namespace netgen
     hnewp = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
     newp = hnewp;
     newgi = ap1;
-  };
+  }//;
 
 
   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi) const
   {
     if (surfi > 0)
-      geometry.Project (surfi, p);
-  };
+      //geometry.Project (surfi, p); //-- Project() changed for optimization
+    {
+      double u, v;
+      geometry.Project (surfi, p, u, v);
+    }
+  }//; -- to compile with -Wall -pedantic
 
   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi, PointGeomInfo & gi) const
   {
     if (surfi > 0)
       if (!geometry.FastProject (surfi, p, gi.u, gi.v))
-	{
-	  cout << "Fast projection to surface fails! Using OCC projection" << endl;
-	  geometry.Project (surfi, p);
-	}
-  };
-
-
+      {
+        cout << "Fast projection to surface fails! Using OCC projection" << endl;
+        //geometry.Project (surfi, p);
+        double u, v;
+        geometry.Project (surfi, p, u, v);
+      }
+  }
 
 }
-
-
 #endif

@@ -1,6 +1,6 @@
 #include <mystdlib.h>
 #include "meshing.hpp"
-
+#include <ctime>
 namespace netgen
 {
   static void glrender (int wait);
@@ -204,7 +204,7 @@ namespace netgen
     static int ts1 = NgProfiler::CreateTimer ("surface meshing start 1");
     static int ts2 = NgProfiler::CreateTimer ("surface meshing start 2");
     static int ts3 = NgProfiler::CreateTimer ("surface meshing start 3");
-
+    time_t aStartT = time(NULL);
 
     NgProfiler::RegionTimer reg (timer);
 
@@ -377,7 +377,7 @@ namespace netgen
 
 
 	// plot statistics
-	if (trials > plotnexttrial)
+	/*if (trials > plotnexttrial)
 	  {
 	    PrintMessage (5, 
 			  "faces = ", nfaces,
@@ -386,8 +386,14 @@ namespace netgen
 			  " els/sec = ",
 			  (mesh.GetNSE() / (GetTime() - starttime + 0.0001)));
 	    plotnexttrial += 1000;
-	  }
+	  }*/
 
+    time_t aCurT = time(NULL);
+    if (difftime (aCurT, aStartT) >= 360 ) // 6 minutes
+    {
+      std::cout << "Break because of long face meshing" << std::endl;
+      return MESHING2_GIVEUP;
+    }
 
 	// unique-pgi, multi-pgi
 	upgeominfo.SetSize(0);
@@ -397,7 +403,7 @@ namespace netgen
 	nfaces = adfront->GetNFL();
 	trials ++;
     
-
+/*
 	if (trials % 1000 == 0)
 	  {
 	    (*testout) << "\n";
@@ -409,7 +415,7 @@ namespace netgen
 	      }
 	    (*testout) << "\n";
 	  }
-
+*/
 
 	int baselineindex = adfront -> SelectBaseLine (p1, p2, blgeominfo1, blgeominfo2, qualclass);
 
@@ -441,8 +447,8 @@ namespace netgen
 
 	if (qualclass > mp.giveuptol2d)
 	  {
-	    PrintMessage (3, "give up with qualclass ", qualclass);
-	    PrintMessage (3, "number of frontlines = ", adfront->GetNFL());
+	    //PrintMessage (3, "give up with qualclass ", qualclass);
+	    //PrintMessage (3, "number of frontlines = ", adfront->GetNFL());
 	    // throw NgException ("Give up 2d meshing");
 	    break;
 	  }
@@ -1521,7 +1527,7 @@ namespace netgen
 
       }
 
-    PrintMessage (3, "Surface meshing done");
+    //PrintMessage (3, "Surface meshing done");
 
 
     adfront->PrintOpenSegments (*testout);
